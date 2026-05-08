@@ -1,0 +1,30 @@
+name: AI Daily News Push
+
+on:
+  # 每天 UTC 00:25 (北京时间 08:25)
+  schedule:
+    - cron: '25 0 * * *'
+  # 支持手动触发（用于测试）
+  workflow_dispatch:
+
+jobs:
+  push-news:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run AI Daily Push
+        env:
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+          FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
+        run: python main.py
