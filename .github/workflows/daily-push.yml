@@ -1,10 +1,8 @@
 name: AI Daily News Push
 
 on:
-  # 每天 UTC 00:25 (北京时间 08:25)
   schedule:
     - cron: '25 0 * * *'
-  # 支持手动触发
   workflow_dispatch:
 
 jobs:
@@ -23,8 +21,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run AI Daily Push
+      - name: Run AI Agent
         env:
+          QWEN_API_KEY: ${{ secrets.QWEN_API_KEY }}
           FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
           FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
         run: python main.py
